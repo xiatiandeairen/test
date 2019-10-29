@@ -1,6 +1,0 @@
-skkasfasklajsl
-<<<<<<< HEAD
-sfa
-=======
-asfa
->>>>>>> develop
