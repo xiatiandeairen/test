@@ -17,6 +17,7 @@ import org.dom4j.io.XMLWriter;
 
 /**
  * dom4j使用
+ * 
  * @author xiatao
  *
  */
@@ -25,8 +26,10 @@ public class XMLParse {
 		xmlParse2();
 		xmlParse();
 	}
+
 	/**
 	 * 解析xml文件
+	 * 
 	 * @throws Exception
 	 */
 	public static void xmlParse() throws Exception {
@@ -34,29 +37,30 @@ public class XMLParse {
 		Document doc = reader.read(new File("index.xml"));
 		Element root = doc.getRootElement();
 		Iterator iterator = root.elementIterator();
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			Element book = (Element) iterator.next();
 			Iterator attrs = book.attributeIterator();
 			System.out.println(book.getName());
-			while(attrs.hasNext()) {
+			while (attrs.hasNext()) {
 				Attribute attr = (Attribute) attrs.next();
-				System.out.println(attr.getName()+":"+attr.getValue()+":"+attr.getText());
+				System.out.println(attr.getName() + ":" + attr.getValue() + ":" + attr.getText());
 			}
 			Iterator es = book.elementIterator();
-			while(es.hasNext()) {
+			while (es.hasNext()) {
 				Element next = (Element) es.next();
-				System.out.println(next.getName()+":"+next.getText());
+				System.out.println(next.getName() + ":" + next.getText());
 			}
 		}
 	}
-	
+
 	/**
 	 * 写入xml文件
+	 * 
 	 * @throws Exception
 	 */
 	public static void xmlParse2() throws Exception {
 		Document document = DocumentHelper.createDocument();
-		//		document.addElement("books").addElement("book").addAttribute("id", "b01");
+		// document.addElement("books").addElement("book").addAttribute("id", "b01");
 		Element root = document.addElement("books");
 		Element book = root.addElement("book");
 		book.addAttribute("id", "b01");
@@ -74,13 +78,13 @@ public class XMLParse {
 		name1.addText("hahahah");
 		author1.addText("xiaohu");
 		price1.addText("162");
-		//		FileWriter writer = new FileWriter(new File("index.xml"));
-		//		document.write(writer);
-		//		writer.close();
-		OutputFormat format=OutputFormat.createPrettyPrint();
-		XMLWriter writer=new XMLWriter(new FileWriter(new File("index.xml")),format);
+		// FileWriter writer = new FileWriter(new File("index.xml"));
+		// document.write(writer);
+		// writer.close();
+		OutputFormat format = OutputFormat.createPrettyPrint();
+		XMLWriter writer = new XMLWriter(new FileWriter(new File("index.xml")), format);
 		writer.write(document);
 		writer.close();
-		
+
 	}
 }
