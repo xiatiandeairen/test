@@ -28,7 +28,7 @@ public class DBUtil {
 		InputStream is=null;
 		Properties prop=new Properties();
 		try {
-			is=ClassLoader.getSystemClassLoader().getResourceAsStream("db.propertities");
+			is=ClassLoader.getSystemClassLoader().getResourceAsStream("db.properties");
 			prop.load(is);
 			driver = prop.getProperty("driver");
 			url=prop.getProperty("url");
@@ -43,7 +43,7 @@ public class DBUtil {
 	/**关闭查询语句
 	 * @return
 	 */
-	public Connection getConnection() {
+	public static Connection getConnection() {
 		Connection conn=null;
 		try {
 			Class.forName(driver);
@@ -55,7 +55,7 @@ public class DBUtil {
 		return conn;
 	}
 	
-	public void closeResource(Connection conn,PreparedStatement ps,ResultSet rs) {
+	public static void closeResource(Connection conn,PreparedStatement ps,ResultSet rs) {
 		if(rs!=null) {
 			try {
 				rs.close();
@@ -87,7 +87,7 @@ public class DBUtil {
 	 * @param conn
 	 * @param ps
 	 */
-	public void closeResource(Connection conn,PreparedStatement ps) {
+	public static void closeResource(Connection conn,PreparedStatement ps) {
 		if(ps!=null) {
 			try {
 				ps.close();
