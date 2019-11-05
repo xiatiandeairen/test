@@ -19,12 +19,7 @@ import com.dao.test.DAO;
 
 class DAOTest {
 	DAO<Customer> dao=new DAO<Customer>();
-	@Test
-	public void testSave(){
-		String sql="insert into customers values (default ,?,?,?)";
-		dao.save(sql, "张三","北京","北京");
-		System.out.println("success");
-	}
+	
 	
 	@Test
 	public void testGet() {

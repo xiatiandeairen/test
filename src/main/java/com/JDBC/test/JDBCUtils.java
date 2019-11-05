@@ -10,7 +10,14 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class JDBCUtils {
 	
 	public static void releaseConnection(Connection connection) {
-		
+		if(connection!=null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private static DataSource datasource=null;

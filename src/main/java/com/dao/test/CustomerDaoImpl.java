@@ -8,32 +8,32 @@ public class CustomerDaoImpl extends DAO<Customer> implements CustomerDao{
 
 	@Override
 	public List<Customer> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		String sql="select * from customer";
+		return getForList(sql);
 	}
 
 	@Override
 	public void save(Customer customer) {
-		// TODO Auto-generated method stub
-		
+		String sql="insert into customer values(default,?,?,?)";
+		update(sql, customer.getName(),customer.getAddress(),customer.getPhone());
 	}
 
 	@Override
 	public Customer get(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		String sql="select * from customer where id=?";
+		return get(sql, id);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+		String sql="delete from customer where id=?";
+		update(sql, id);
 	}
 
 	@Override
 	public long getCountWithName(String name) {
-		// TODO Auto-generated method stub
-		return 0;
+		String sql="select count(id) from customer where name=?";
+		return getForValue(sql, name);
 	}
 
 }

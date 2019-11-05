@@ -11,35 +11,46 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
+
 import com.JDBC.test.DBUtil;
+import com.JDBC.test.JDBCUtils;
 import com.dao.domain.Customer;
 
 public class DAO<T> {
+	private QueryRunner runner=new QueryRunner();
 	public DAO(){
-		System.out.println(this.getClass());
-		Class<?>[] interfaces = this.getClass().getInterfaces();
-		System.out.println("----------------");
-		System.out.println(Arrays.toString(interfaces));
-		System.out.println("-------------");
-		Class<?> class1 = this.getClass().getSuperclass();
-		System.out.println(class1);
-		System.out.println("-----------");
+//		System.out.println(this.getClass());
+//		Class<?>[] interfaces = this.getClass().getInterfaces();
+//		System.out.println("----------------");
+//		System.out.println(Arrays.toString(interfaces));
+//		System.out.println("-------------");
+//		Class<?> class1 = this.getClass().getSuperclass();
+//		System.out.println(class1);
+//		System.out.println("-----------");
 		Type superclass = this.getClass().getGenericSuperclass();
-		System.out.println(superclass);
-		System.out.println("-------------");
+//		System.out.println(superclass);
+//		System.out.println("-------------");
 		if(superclass instanceof ParameterizedType) {
 			ParameterizedType pt=(ParameterizedType) superclass;
 			Type[] types = pt.getActualTypeArguments();
 			System.out.println(Arrays.toString(types));
+			if(types!=null&&types.length>0) {
+				clazz=(Class<T>) types[0];
+				System.out.println(clazz);
+			}
 		}
-		System.out.println("调用了一次");
+//		System.out.println("调用了一次");
 	}
-	{
-		System.out.println("构造块");
-	}
-	static {
-		System.out.println("静态构造块");
-	}
+//	{
+//		System.out.println("构造块");
+//	}
+//	static {
+//		System.out.println("静态构造块");
+//	}
 
 	private Class<T> clazz;
 
@@ -50,7 +61,16 @@ public class DAO<T> {
 	 * @return
 	 */
 	public <E> E getForValue(String sql,Object...args) {
-		return null;
+		E t=null;
+		Connection connection=null;
+		try {
+			connection = JDBCUtils.getConnection();
+			t = (E) runner.query(connection,sql, new ScalarHandler<T>(),args);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return t;
 	}
 
 	/**
@@ -60,7 +80,18 @@ public class DAO<T> {
 	 * @return
 	 */
 	public List<T> getForList(String sql,Object...args){
-		return null;
+		List<T> list=null;
+		Connection connection=null;
+		try {
+			connection = JDBCUtils.getConnection();
+			list = runner.query(connection,sql, new BeanListHandler<T>(clazz), args);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCUtils.releaseConnection(connection);
+		}
+		return list;
 	}
 
 	/**
@@ -107,7 +138,7 @@ public class DAO<T> {
 	 * @param sql:SQL语句
 	 * @param args:填充SQL语句占位符
 	 */
-	public void save(String sql,Object...args) {
+	public void update(String sql,Object...args) {
 		PreparedStatement ps = null;
 		Connection conn = null;
 		try {
@@ -123,4 +154,5 @@ public class DAO<T> {
 			DBUtil.closeResource(conn, ps);
 		}
 	}
+
 }
